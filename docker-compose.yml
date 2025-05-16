@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  waha:
+    image: devlikeapro/waha:latest
+    container_name: Chatbot_EJAP
+    restart: always
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./waha-data:/root/.waha
+    environment:
+      - WHATSAPP_START_SESSION=default
+      - WHATSAPP_HOOK_URL=http://api:5000/chatbot/webhook/
+      - WHATSAPP_HOOK_EVENTS=message.any
+      - WHATSAPP_RESTART_ALL_SESSIONS=True
+      - WAHA_AUTO_START_DELAY_SECONDS=0
+
+
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: wpp_bot_api
+    ports:
+      - '5000:5000'
+    volumes:
+      - .:/app
+      - ./rag/Data:/app/rag/data
+      - ./chroma_data:/app/chroma_data
+      - pip_cache:/root/.cache/pip
+
+
+
+volumes:
+  waha-data:
+  pip_cache:

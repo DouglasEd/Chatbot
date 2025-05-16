@@ -1,0 +1,21 @@
+FROM python:3.11
+
+ENV PYTHONUNBUFFERED=1
+
+# Diretório separado para instalar dependências (melhora cache)
+WORKDIR /install
+COPY requirements.txt .
+RUN python -m pip install --upgrade pip
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Cria diretório da aplicação
+WORKDIR /app
+
+# Copia apenas o necessário, exceto a pasta de dados
+COPY . .
+
+# Garante que as libs estejam disponíveis no PYTHONPATH
+ENV PYTHONPATH="/install/packages:/app"
+
+EXPOSE 5000
+CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
