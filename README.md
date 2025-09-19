@@ -54,7 +54,7 @@ Depois, acesse a interface do WAHA, vá até a seção de **Sessões** e escanei
 ### 2. Inicie a API do Bot
 
 ```bash
-docker compose up api
+docker-compose --build api
 ```
 
 Pronto! Agora todas as mensagens recebidas no WhatsApp serão processadas pela API e respondidas automaticamente usando o modelo da Groq.
